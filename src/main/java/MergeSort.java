@@ -3,8 +3,8 @@ public class MergeSort {
 
     public static void sort(int[] arr, Metrics metrics) {
         if (arr == null || arr.length <= 1) return;
-        int[] aux = new int[arr.length];
         metrics.startTimer();
+        int[] aux = new int[arr.length];
         sort(arr, aux, 0, arr.length - 1, metrics, 1);
         metrics.stopTimer();
     }

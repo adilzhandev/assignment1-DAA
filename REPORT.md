@@ -28,7 +28,7 @@ at the same speed, so this is **case 2** of the Master Theorem. The result is
 **Θ(n log n)**.
 
 The measurements show the same thing. The ratio `comparisons / (n·log2 n)` stays
-between 0.95 and 1.00 on random input for all four sizes. So the real cost follows
+between 0.96 and 1.00 on random input for all four sizes. So the real cost follows
 n·log2 n.
 
 ### QuickSort (assuming a balanced split)
@@ -45,7 +45,7 @@ proportion, and even a bad cut still removes a large part of the elements. For
 example, a 1:9 cut gives a depth that is only a constant times bigger than log2 n.
 To get the quadratic worst case, bad cuts must happen many times in a row, and this
 becomes less and less probable. In theory the average number of comparisons is about
-1.39·n·log2 n. Our ratio on random input is 1.70–2.14, a little higher, because the
+1.39·n·log2 n. Our ratio on random input is 1.54–1.93, a little higher, because the
 3-way partition makes up to two comparisons per element instead of one.
 
 ### QuickSelect (assuming a balanced split)
@@ -60,7 +60,7 @@ faster than 1. This is **case 3**, and the result is **Θ(n)**. The first level 
 most of the work.
 
 It is easy to see why: the work is n + n/2 + n/4 + ... = 2n, which is linear. The
-measurements agree. The value `comparisons / n` stays between 3.6 and 7.3 and does
+measurements agree. The value `comparisons / n` stays between 2.1 and 7.1 and does
 not grow, even when n becomes 1000 times bigger.
 
 ---
@@ -74,23 +74,25 @@ Full data is in `results.csv`.
 
 | n | MS random | MS sorted | MS dup | QS random | QS sorted | QS dup | Sel random | Sel sorted | Sel dup |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 000 | 0.397 | 0.132 | 0.208 | 0.404 | 0.323 | 0.463 | 0.082 | 0.017 | 0.082 |
-| 10 000 | 5.072 | 0.320 | 0.666 | 5.409 | 2.439 | 0.200 | 0.762 | 0.103 | 0.156 |
-| 100 000 | 11.045 | 3.194 | 6.391 | 12.336 | 8.720 | 1.954 | 1.554 | 0.589 | 1.251 |
-| 1 000 000 | 128.661 | 44.354 | 77.186 | 152.365 | 100.945 | 19.657 | 16.478 | 7.385 | 13.333 |
+| 1 000 | 0.341 | 0.120 | 0.239 | 0.422 | 0.306 | 0.427 | 0.096 | 0.023 | 0.048 |
+| 10 000 | 4.815 | 0.938 | 0.692 | 4.711 | 0.856 | 0.188 | 0.664 | 0.063 | 0.105 |
+| 100 000 | 10.373 | 3.330 | 6.372 | 12.177 | 8.696 | 1.988 | 1.644 | 0.776 | 1.294 |
+| 1 000 000 | 130.641 | 48.643 | 75.401 | 171.311 | 102.549 | 20.135 | 20.395 | 9.098 | 10.188 |
+
 
 ### Maximum recursion depth
 
 | n | MS random | MS sorted | MS dup | QS random | QS sorted | QS dup | Sel random | Sel sorted | Sel dup |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 000 | 8 | 8 | 8 | 5 | 6 | 2 | 11 | 12 | 4 |
-| 10 000 | 11 | 11 | 11 | 8 | 8 | 3 | 19 | 18 | 5 |
-| 100 000 | 14 | 14 | 14 | 11 | 11 | 2 | 15 | 25 | 3 |
-| 1 000 000 | 18 | 18 | 18 | 13 | 13 | 3 | 24 | 21 | 5 |
+| 1 000 | 8 | 8 | 8 | 6 | 7 | 2 | 1 | 1 | 1 |
+| 10 000 | 11 | 11 | 11 | 7 | 8 | 2 | 1 | 1 | 1 |
+| 100 000 | 14 | 14 | 14 | 10 | 11 | 2 | 1 | 1 | 1 |
+| 1 000 000 | 18 | 18 | 18 | 13 | 13 | 3 | 1 | 1 | 1 |
+
 
 The limit from the task, `2·log2(n)`, is 19 / 26 / 33 / 39 for the four sizes.
-For QuickSelect this column counts loop iterations, not stack depth: the algorithm
-is iterative and always uses a single stack frame.
+QuickSelect always shows 1, because it is written as a loop and not as a recursion,
+so it uses one stack frame for any size of the input.
 
 ### Ratio (Θ check)
 
@@ -98,10 +100,11 @@ For the sorts: `comparisons / (n·log2 n)`. For QuickSelect: `comparisons / n`.
 
 | n | MS random | MS sorted | MS dup | QS random | QS sorted | QS dup | Sel random | Sel sorted | Sel dup |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 000 | 0.95 | 0.43 | 0.91 | 2.14 | 1.57 | 0.51 | 3.92 | 4.07 | 3.61 |
-| 10 000 | 0.96 | 0.45 | 0.91 | 1.70 | 1.78 | 0.38 | 6.64 | 7.33 | 4.02 |
-| 100 000 | 0.99 | 0.45 | 0.94 | 1.80 | 1.88 | 0.34 | 4.80 | 4.55 | 3.69 |
-| 1 000 000 | 1.00 | 0.46 | 0.95 | 1.86 | 1.81 | 0.25 | 4.33 | 5.30 | 4.20 |
+| 1 000 | 0.96 | 0.43 | 0.91 | 1.54 | 1.60 | 0.55 | 4.41 | 5.95 | 2.10 |
+| 10 000 | 0.96 | 0.45 | 0.91 | 1.79 | 1.73 | 0.40 | 5.06 | 3.90 | 3.00 |
+| 100 000 | 0.99 | 0.45 | 0.94 | 1.90 | 1.80 | 0.39 | 6.55 | 4.42 | 3.69 |
+| 1 000 000 | 1.00 | 0.46 | 0.95 | 1.93 | 1.84 | 0.26 | 7.10 | 4.85 | 2.20 |
+
 
 ---
 
@@ -121,32 +124,33 @@ Bounds of the ratio for every series (over the four sizes):
 
 | series | c1 (min) | c2 (max) |
 |---|---|---|
-| MergeSort / random | 0.95 | 1.00 |
+| MergeSort / random | 0.96 | 1.00 |
 | MergeSort / sorted | 0.43 | 0.46 |
 | MergeSort / duplicates | 0.91 | 0.95 |
-| QuickSort / random | 1.70 | 2.14 |
-| QuickSort / sorted | 1.57 | 1.88 |
-| QuickSort / duplicates | 0.25 | 0.51 |
-| QuickSelect / random | 3.92 | 6.64 |
-| QuickSelect / sorted | 4.07 | 7.33 |
-| QuickSelect / duplicates | 3.61 | 4.20 |
+| QuickSort / random | 1.54 | 1.93 |
+| QuickSort / sorted | 1.60 | 1.84 |
+| QuickSort / duplicates | 0.26 | 0.55 |
+| QuickSelect / random | 4.41 | 7.10 |
+| QuickSelect / sorted | 3.90 | 5.95 |
+| QuickSelect / duplicates | 2.10 | 3.69 |
+
 
 The definition of Θ needs constants c1, c2 and n0, so that
 c1·g(n) ≤ f(n) ≤ c2·g(n) for all n ≥ n0. Here f(n) is the number of comparisons we
 measured, and g(n) is n·log2 n for the sorts and n for QuickSelect.
 
 For MergeSort the ratio is almost constant from the smallest size. So n0 = 1000,
-c1 = 0.95 and c2 = 1.00 on random input. The line is very flat, so the bound is
+c1 = 0.96 and c2 = 1.00 on random input. The line is very flat, so the bound is
 tight and we can write Θ(n log n) and not only O(n log n). The sorted and the
 duplicate series are also flat, but on a different level (about 0.45 and 0.93). This
 means that the type of input changes the constant, but not the growth.
 
-For QuickSort the ratio is stable from n = 10 000. So n0 = 10 000, c1 = 1.70 and
-c2 = 1.88 on random input. At n = 1000 the value is 2.14, a little outside this
-band. This is normal: on a small array one bad pivot changes the average a lot.
+For QuickSort the ratio is stable from n = 10 000. So n0 = 10 000, c1 = 1.79 and
+c2 = 1.93 on random input. At n = 1000 the value is only 1.54, below this band. This
+is normal: on a small array one lucky or unlucky pivot changes the average a lot.
 
-For QuickSelect the ratio stays between 3.6 and 7.3 and does not grow, so the linear
-bound works with n0 = 1000, c1 = 3.6 and c2 = 7.3. The band is wider than for the
+For QuickSelect the ratio stays between 2.1 and 7.1 and does not grow, so the linear
+bound works with n0 = 1000, c1 = 2.1 and c2 = 7.1. The band is wider than for the
 sorts. This is not a mistake in the measurement. QuickSelect makes only about log n
 partitions in one run, so one bad pivot changes the result a lot. MergeSort always
 does the same work, and QuickSort has many more partitions, so its randomness is
@@ -177,8 +181,8 @@ The constants also depend on the type of input. MergeSort makes about two times
 fewer comparisons on sorted input (ratio 0.46 against 1.00). When every element of
 the left half is smaller than every element of the right half, the merge loop takes
 all elements from the left half first, and then copies the right half without any
-comparison. QuickSort is the fastest of all on duplicates (ratio 0.25 and only
-19.66 ms at n = 1 000 000). The 3-way partition puts all elements equal to the pivot
+comparison. QuickSort is the fastest of all on duplicates (ratio 0.26 and only
+20.14 ms at n = 1 000 000). The 3-way partition puts all elements equal to the pivot
 into the middle part, where they are already in their final place, so they never go
 into the recursion. On an array of equal values the whole array becomes this middle
 part after one pass.

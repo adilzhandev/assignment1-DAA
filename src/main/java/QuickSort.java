@@ -25,7 +25,7 @@ public class QuickSort {
         }
     }
 
-    protected static int[] partition(int[] arr, int lo, int hi, Metrics metrics) {
+    static int[] partition(int[] arr, int lo, int hi, Metrics metrics) {
         int pivotIndex = lo + RAND.nextInt(hi - lo + 1);
         swap(arr, lo, pivotIndex);
         int pivot = arr[lo];

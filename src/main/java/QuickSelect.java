@@ -13,10 +13,11 @@ public class QuickSelect {
 
         metrics.startTimer();
         int lo = 0, hi = arr.length - 1;
-        int depth = 1;
+
+        // Алгоритм итеративный: он использует один кадр стека независимо от n.
+        metrics.updateDepth(1);
 
         while (lo <= hi) {
-            metrics.updateDepth(depth++);
             int[] p = QuickSort.partition(arr, lo, hi, metrics);
             if (k >= p[0] && k <= p[1]) {
                 metrics.stopTimer();
