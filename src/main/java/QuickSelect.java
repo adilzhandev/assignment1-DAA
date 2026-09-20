@@ -1,5 +1,16 @@
 public class QuickSelect {
     public static int select(int[] arr, int k, Metrics metrics) {
+        if (arr == null) {
+            throw new IllegalArgumentException("array must not be null");
+        }
+        if (arr.length == 0) {
+            throw new IllegalArgumentException("array must not be empty");
+        }
+        if (k < 0 || k >= arr.length) {
+            throw new IllegalArgumentException(
+                    "k must be in [0, " + (arr.length - 1) + "], got " + k);
+        }
+
         metrics.startTimer();
         int lo = 0, hi = arr.length - 1;
         int depth = 1;
