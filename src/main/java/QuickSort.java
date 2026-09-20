@@ -13,25 +13,30 @@ public class QuickSort {
     private static void sort(int[] arr, int lo, int hi, Metrics metrics, int depth) {
         if (lo >= hi) return;
         metrics.updateDepth(depth);
-        int p = partition(arr, lo, hi, metrics);
-        sort(arr, lo, p - 1, metrics, depth + 1);
-        sort(arr, p + 1, hi, metrics, depth + 1);
+        int[] p = partition(arr, lo, hi, metrics);
+        sort(arr, lo, p[0] - 1, metrics, depth + 1);
+        sort(arr, p[1] + 1, hi, metrics, depth + 1);
     }
 
-    private static int partition(int[] arr, int lo, int hi, Metrics metrics) {
+    protected static int[] partition(int[] arr, int lo, int hi, Metrics metrics) {
         int pivotIndex = lo + RAND.nextInt(hi - lo + 1);
-        swap(arr, pivotIndex, hi);
-        int pivot = arr[hi];
-        int i = lo;
-        for (int j = lo; j < hi; j++) {
+        swap(arr, lo, pivotIndex);
+        int pivot = arr[lo];
+
+        int lt = lo, gt = hi;
+        int i = lo + 1;
+        while (i <= gt) {
             metrics.addComparison();
-            if (arr[j] < pivot) {
-                swap(arr, i, j);
+            if (arr[i] < pivot) swap(arr, lt++, i++);
+            else if (arr[i] > pivot) {
+                metrics.addComparison();
+                swap(arr, i, gt--);
+            } else {
+                metrics.addComparison();
                 i++;
             }
         }
-        swap(arr, i, hi);
-        return i;
+        return new int[]{lt, gt};
     }
 
     private static void swap(int[] arr, int i, int j) {
