@@ -11,11 +11,18 @@ public class QuickSort {
     }
 
     private static void sort(int[] arr, int lo, int hi, Metrics metrics, int depth) {
-        if (lo >= hi) return;
-        metrics.updateDepth(depth);
-        int[] p = partition(arr, lo, hi, metrics);
-        sort(arr, lo, p[0] - 1, metrics, depth + 1);
-        sort(arr, p[1] + 1, hi, metrics, depth + 1);
+        while (lo < hi) {
+            metrics.updateDepth(depth);
+            int[] p = partition(arr, lo, hi, metrics);
+
+            if (p[0] - lo < hi - p[1]) {
+                sort(arr, lo, p[0] - 1, metrics, depth + 1);
+                lo = p[1] + 1;
+            } else {
+                sort(arr, p[1] + 1, hi, metrics, depth + 1);
+                hi = p[0] - 1;
+            }
+        }
     }
 
     protected static int[] partition(int[] arr, int lo, int hi, Metrics metrics) {
