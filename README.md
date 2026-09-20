@@ -1,5 +1,8 @@
 # Assignment 1 — Divide and Conquer & Asymptotic Notations
 
+Author: Adilzhan Kuandykov, group SE-2526
+Repository: https://github.com/adilzhandev/assignment1-DAA (branch `main`, tag `v1.0`)
+
 This project has three algorithms: MergeSort, QuickSort and QuickSelect.
 For every run it measures the time, the number of comparisons and the maximum
 recursion depth.
